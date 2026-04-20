@@ -198,6 +198,13 @@
     background: rgba(122,200,221,0.1);
   }
 
+  /* Image Card */
+  .image-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
   .cta-btn.disabled {
     border-color: #4A5568;
     color: #4A5568;
@@ -351,7 +358,9 @@
       <a href="#" class="cta-btn disabled">→ 即将开源</a>
     </div>
     <div class="skill-visual">
-      <!-- 可放置 Edge LLM 相关视觉元素 -->
+      <div class="image-card">
+        <img src="ai-claude-terminal.jpg" alt="Claude 终端本地部署界面" style="width:100%;border-radius:8px;">
+      </div>
     </div>
   </div>
 
