@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投资工具集 · 筑见 Neil</title>
+<meta name="description" content="价值投资辅助工具：腾讯FCF倍数卖出纪律、持仓监控系统、量化情绪探测器。">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0e1a;
+    --bg-elev: #0f1520;
+    --text: #e8eef5;
+    --text-muted: #93a5bb;
+    --text-dim: #5a6c82;
+    --accent: #7ac8dd;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.18);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    padding: 32px 6vw;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--accent); }
+
+  .header-title {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 80px 6vw;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+
+  .hero-desc {
+    color: var(--text-muted);
+    font-size: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* Tool Cards */
+  .tools {
+    padding: 40px 6vw 120px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .tool {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    padding: 48px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .tool:nth-child(even) {
+    direction: rtl;
+  }
+
+  .tool:nth-child(even) > * {
+    direction: ltr;
+  }
+
+  .tool:last-child { border-bottom: 1px solid var(--border); }
+
+  .tool-content { }
+
+  .tool-meta {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .tool-title {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .tool-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  /* Data Card */
+  .data-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+  }
+
+  .data-card-title {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    letter-spacing: 0.1em;
+  }
+
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .data-item {}
+
+  .data-value {
+    font-family: "Menlo", "Courier New", monospace;
+    font-size: 24px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .data-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .data-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(122,200,221,0.1);
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    color: var(--accent);
+    font-size: 13px;
+    margin-top: 16px;
+  }
+
+  /* Image Card */
+  .image-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .image-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .image-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(10,14,26,0.3), transparent);
+    z-index: 1;
+  }
+
+  .image-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to top, rgba(10,14,26,0.4), transparent);
+    z-index: 1;
+  }
+
+  /* Signal Card */
+  .signal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .signal-item {
+    background: rgba(122,200,221,0.05);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .signal-value {
+    font-family: "Menlo", monospace;
+    font-size: 20px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .signal-label {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* Footer */
+  footer {
+    padding: 40px 6vw;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.3em;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .tool {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .tool:nth-child(even) {
+      direction: ltr;
+    }
+    .data-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .signal-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="index.html" class="back-link">← 返回</a>
+  <span class="header-title">投资工具集</span>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">Investment Tools</div>
+  <h1>判断框架的工具化</h1>
+  <p class="hero-desc">把价值投资的判断逻辑，变成可以自动运行的系统。估值监控、信号触发、回测验证、执行反馈——每一个环节都有工具支撑。</p>
+</section>
+
+<div class="tools">
+
+  <!-- Tool 1: ClawBot - 交互截图 -->
+  <div class="tool">
+    <div class="tool-content">
+      <div class="tool-meta">估值查询</div>
+      <div class="tool-title">ClawBot · 自然语言查估值</div>
+      <div class="tool-desc">用自然语言问个股估值，秒级返回历史分位、极值对比、核心结论。不需要记公式，一句话搞定。</div>
+      <div class="data-tag">微信对话 → 即时响应</div>
+    </div>
+    <div class="image-card">
+      <img src="invest-clawbot.jpg" alt="ClawBot 估值查询界面">
+    </div>
+  </div>
+
+  <!-- Tool 2: FCF 信号 - 数据卡片 -->
+  <div class="tool">
+    <div class="tool-content">
+      <div class="tool-meta">交易信号</div>
+      <div class="tool-title">FCF 估值触发 · 买入信号</div>
+      <div class="tool-desc">基于自由现金流倍数，自动监控股价位置。触发阈值时推送到微信，第一时间知道机会窗口。</div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">FCF 估值触发</div>
+      <div class="signal-grid">
+        <div class="signal-item">
+          <div class="signal-value">24.3x</div>
+          <div class="signal-label">当前 FCF 倍数</div>
+        </div>
+        <div class="signal-item">
+          <div class="signal-value" style="color: #4ade80;">🟢 买入</div>
+          <div class="signal-label">信号状态</div>
+        </div>
+      </div>
+      <div class="data-tag" style="margin-top: 16px;">自动推送至微信</div>
+    </div>
+  </div>
+
+  <!-- Tool 3: LightGBM 回测 - 数据卡片 -->
+  <div class="tool">
+    <div class="tool-content">
+      <div class="tool-meta">策略回测</div>
+      <div class="tool-title">量化情绪探测器 · LightGBM</div>
+      <div class="tool-desc">用情绪因子发现市场极端点，配合价值投资做买入时机判断。数据说话，不靠直觉。</div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">策略回测 · 沪深300 · 2025</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="data-value">49.41%</div>
+          <div class="data-label">策略年化</div>
+        </div>
+        <div class="data-item">
+          <div class="data-value">28.11%</div>
+          <div class="data-label">跑赢基准</div>
+        </div>
+        <div class="data-item">
+          <div class="data-value">16.58%</div>
+          <div class="data-label">超额收益</div>
+        </div>
+      </div>
+      <div style="margin-top: 16px; font-size: 12px; color: var(--text-dim);">
+        LightGBM + Alpha158 因子
+      </div>
+    </div>
+  </div>
+
+  <!-- Tool 4: 邮件监控 - 数据卡片 -->
+  <div class="tool">
+    <div class="tool-content">
+      <div class="tool-meta">执行反馈</div>
+      <div class="tool-title">交易执行闭环 · 邮件推送</div>
+      <div class="tool-desc">自动化交易触发后，邮件同步执行结果：账户操作、个股止盈/买入、盈亏汇总。执行情况一目了然。</div>
+    </div>
+    <div class="image-card">
+      <img src="invest-email.jpg" alt="交易执行反馈邮件" style="border-radius: 4px;">
+    </div>
+  </div>
+
+  <!-- Tool 5: PE-TTM - 交互截图 -->
+  <div class="tool">
+    <div class="tool-content">
+      <div class="tool-meta">估值分析</div>
+      <div class="tool-title">PE-TTM 深度分布 · 估值底部判断</div>
+      <div class="tool-desc">个股PE滚动市盈率历史分位分析。当前位置、历史均值/中位数/极值、分布占比——看清估值全貌。</div>
+    </div>
+    <div class="image-card">
+      <img src="invest-pe.jpg" alt="PE-TTM 估值分布分析">
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  筑见 NEIL · ZHUJIANNEIL.COM · MMXXVI
+</footer>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</body>
+</html>
