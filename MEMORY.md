@@ -56,6 +56,7 @@
 
 - 首页：https://zhujianneil.github.io
 - 投资页：https://zhujianneil.github.io/invest.html
+- AI页：https://zhujianneil.github.io/ai.html
 - GitHub：https://github.com/zhujianneil/github.io（仓库实际为 zhujianneil.github.io）
 - 服务器：甲骨文云 VPS，目录 /home/ubuntu
 - GitHub Actions 自动部署已配置
@@ -63,6 +64,24 @@
 ## 首页结构
 
 - Hero：标题 + CTA（"如果你也在用框架对抗噪音"）+ 三个锚点卡片
-- Works：投资（链 invest.html）/ AI / 认知
-- Contact：召唤语 + GitHub + 邮箱 + 三张引流图 + 咨询描述（投资判断 · AI 工作流设计 · AI × 财务）
-- Footer：不蒜子访问统计
+- Works：投资（链 invest.html）/ AI（链 ai.html）/ 认知
+- Contact：召唤语 + GitHub + 邮箱 + 三张引流图 + 咨询描述（交流 / 合作 / 咨询）
+- Footer：不蒜子访问统计（初始值8427）
+
+## 用户持仓（投资分析参考）
+
+**持仓（12只）**:
+- 美股：BRK.B、PDD、V
+- 港股：腾讯(00700)、小米(01810)
+- A股：移动(600941)、福耀(600660)、招行(600036)、海尔(600690)、宝钢(600019)、上港(600018)、中国通号(688009)
+
+**观察仓（4只）**:
+- 茅台(600519)、神华(601088)、长江电力(600900)、泡泡玛特(09992)
+
+## 重要原则
+
+1. **发现错误要直接指出**，不要美化
+2. **不许把任务丢给用户**，遇到问题自己解决
+3. **外部操作谨慎**（发邮件、发帖等）
+4. **对内操作大胆**（阅读、整理、学习）
+5. **换图必须确认**：先识别内容→确认位置→用户确认→一次只换一张→上传后验证
