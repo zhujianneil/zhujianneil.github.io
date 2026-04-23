@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M53G5WD7');</script>
+<!-- End Google Tag Manager -->
+<link rel="icon" type="image/png" href="favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>筑见 Neil — 搭骨架,看世界</title>
+<meta name="description" content="Neil · 价值投资 · AI 工作流 · 认知。三地股票的判断,AI 的工作流,一阴一阳的认知。">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0e1a;
+    --bg-elev: #0f1520;
+    --text: #e8eef5;
+    --text-muted: #93a5bb;
+    --text-dim: #5a6c82;
+    --accent: #7ac8dd;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.18);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Breathing canvas background — ambient only */
+  #breath-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  main { position: relative; z-index: 1; }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8vh 6vw;
+    position: relative;
+  }
+
+  .hero-content {
+    max-width: 640px;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    color: var(--text-dim);
+    margin-bottom: 28px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .hero h1 {
+    font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
+    font-size: clamp(40px, 7vw, 68px);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  .hero .tagline {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: clamp(18px, 2.6vw, 24px);
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  .hero-identity {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 28px;
+  }
+
+  .hero-cta {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .cta-link {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .cta-link:hover {
+    opacity: 0.8;
+  }
+
+  .pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .pillar {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    align-items: baseline;
+    gap: 20px;
+    padding: 16px 22px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: rgba(10,14,26,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-align: left;
+  }
+
+  .pillar-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .pillar-link .pillar {
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+
+  .pillar-link:hover .pillar {
+    border-color: var(--border-strong);
+    background: rgba(122,200,221,0.05);
+  }
+
+  .pillar-key {
+    font-family: "Songti SC", serif;
+    font-size: 16px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .pillar-val {
+    color: var(--text-muted);
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+
+  /* ============ SECTIONS ============ */
+  section.content {
+    background: var(--bg);
+    padding: 120px 6vw;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
+
+  .section-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: clamp(24px, 3.5vw, 32px);
+    font-weight: 400;
+    margin-bottom: 56px;
+    letter-spacing: 0.06em;
+    color: var(--text);
+  }
+
+  /* ============ WORKS ============ */
+  .work-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work {
+    display: block;
+    padding: 36px 0;
+    border-top: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: padding-left 0.3s ease, background 0.3s ease;
+    position: relative;
+  }
+
+  .work::after {
+    content: "→";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 18px;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .work:hover { padding-left: 16px; }
+  .work:hover::after {
+    transform: translateY(-50%) translateX(6px);
+    color: var(--accent);
+  }
+
+  .work:last-child { border-bottom: 1px solid var(--border); }
+
+  .work-meta {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .work-title {
+    font-family: "Songti SC", serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .work-desc {
+    color: var(--text-muted);
+    font-size: 14.5px;
+    padding-right: 30px;
+  }
+
+  /* ============ CONTACT ============ */
+  .newsletter {
+    padding: 40px 32px;
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    margin-bottom: 48px;
+    text-align: center;
+    background: rgba(122,200,221,0.03);
+  }
+
+  .newsletter-title {
+    font-family: "Songti SC", serif;
+    font-size: 22px;
+    margin-bottom: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  .newsletter-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+
+  .github-section {
+    padding: 40px 32px;
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    margin-bottom: 48px;
+    text-align: center;
+    background: rgba(122,200,221,0.03);
+  }
+
+  .github-title {
+    font-family: "Songti SC", serif;
+    font-size: 22px;
+    margin-bottom: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  .github-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+
+  .contact-intro {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 40px;
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 13px 32px;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .social-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .social {
+    padding: 11px 22px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    border-radius: 2px;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .social:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+
+  .social-img {
+    padding: 0;
+    border: none;
+    transition: opacity 0.2s;
+  }
+
+  .social-img:hover {
+    opacity: 0.8;
+  }
+
+  .social-icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 2px;
+    display: block;
+    object-fit: cover;
+  }
+
+  .contact-inquiry {
+    text-align: center;
+    padding: 36px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 2;
+  }
+
+  .contact-inquiry .inquiry-title {
+    font-family: "Songti SC", serif;
+    color: var(--text);
+    font-size: 17px;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .contact-inquiry .inquiry-desc {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .contact-inquiry a {
+    color: var(--accent);
+    text-decoration: none;
+    font-family: "Menlo", "Courier New", monospace;
+    font-size: 14px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .contact-inquiry a:hover { border-bottom-color: var(--accent); }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 56px 6vw 40px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.3em;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============ MOBILE ============ */
+  @media (max-width: 640px) {
+    .hero { padding: 6vh 5vw; }
+    section.content { padding: 80px 5vw; }
+    .pillar { grid-template-columns: 1fr; gap: 4px; padding: 14px 18px; }
+    .pillar-val { font-size: 14px; }
+    .work { padding: 28px 0; }
+    .work-title { font-size: 20px; }
+    .work-desc { padding-right: 24px; font-size: 14px; }
+    .newsletter { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M53G5WD7"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<canvas id="breath-bg"></canvas>
+
+<main>
+
+  <!-- ============ HERO · 身份锚 ============ -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">筑见 · ZHUJIAN</div>
+      <h1>我是 Neil</h1>
+      <p class="tagline">搭骨架,看世界</p>
+      <p class="hero-identity">CFO出身 · 价值投资 · AI 框架建造</p>
+      <p class="hero-cta">如果你也在用框架对抗噪音，我们可能有共鸣。<br><a href="#works" class="cta-link">→ 看我的判断样本</a></p>
+      <div class="pillars">
+        <a href="#works-invest" class="pillar-link">
+          <div class="pillar">
+            <span class="pillar-key">投资</span>
+            <span class="pillar-val">把判断纪律变成可运行的系统，不靠盘感，靠框架</span>
+          </div>
+        </a>
+        <a href="#works-ai" class="pillar-link">
+          <div class="pillar">
+            <span class="pillar-key">AI</span>
+            <span class="pillar-val">把"怎么想"拆成可以运行的工作流</span>
+          </div>
+        </a>
+        <a href="#works-meta" class="pillar-link">
+          <div class="pillar">
+            <span class="pillar-key">认知</span>
+            <span class="pillar-val">用内观和贝叶斯调试自己的决策操作系统</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORKS · 作品信号 ============ -->
+  <section class="content">
+    <div class="section-inner">
+      <div class="section-label">Works</div>
+      <h2 class="section-title" id="works">判断力的样本</h2>
+      <div class="work-list">
+
+        <a href="invest.html" class="work" target="_blank" rel="noopener" id="works-invest">
+          <div class="work-meta">投资 · Investment</div>
+          <div class="work-title">价值投资工具集</div>
+          <div class="work-desc">多种投资辅助工具：腾讯 FCF 倍数卖出纪律、持仓监控系统（股价/公告/FCF 定时检查）、量化情绪探测器（用情绪因子发现市场极端点，配合价值投资做买入时机判断）。</div>
+        </a>
+
+        <a href="ai.html" class="work" target="_blank" rel="noopener" id="works-ai">
+          <div class="work-meta">AI · Framework</div>
+          <div class="work-title">SKILL 合集</div>
+          <div class="work-desc"><strong>mirror · 观己</strong> 等 AI skill，把思维框架变成可运行的工具。<br>把判断逻辑代码化，可复用、可检验。</div>
+        </a>
+
+        <a href="meta.html" class="work" target="_blank" rel="noopener" id="works-meta">
+          <div class="work-meta">认知 · Meta</div>
+          <div class="work-title">认知框架合集</div>
+          <div class="work-desc"><strong>TR-001~004</strong> — 把自己当系统调试，四条行为触发规则，处理分析替代执行、过度自信等典型失败模式。<br><strong>知识网络图谱</strong> — 辅助发现认知卡点。</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT · 接触 ============ -->
+  <section class="content">
+    <div class="section-inner">
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">保持联系</h2>
+
+      <div class="contact-intro">
+        如果你在做这些事，我们可能聊得来：<br>
+        · 想把 AI 嵌进业务流程，但不知道从哪下手<br>
+        · 在做价值投资，想交换判断框架<br>
+        · 对「把思维变成工具」这件事有兴趣
+      </div>
+
+      <div class="github-section">
+        <div class="github-title">GitHub</div>
+        <div class="github-desc">开源项目 · 代码 · 工具集</div>
+        <a href="https://github.com/zhujianneil" class="btn" target="_blank" rel="noopener">访问主页</a>
+      </div>
+
+      <div class="social-row">
+        <!-- TODO: 替换为公众号链接 -->
+        <a href="#" class="social-img" target="_blank" rel="noopener">
+          <img src="social-gongzhonghao.jpg" alt="公众号" class="social-icon">
+        </a>
+        <!-- TODO: 替换为视频号链接 -->
+        <a href="#" class="social-img" target="_blank" rel="noopener">
+          <img src="social-video.jpg" alt="视频号" class="social-icon">
+        </a>
+        <!-- TODO: 替换为小红书主页链接 -->
+        <a href="#" class="social-img" target="_blank" rel="noopener">
+          <img src="social-xiaohongshu.jpg" alt="小红书" class="social-icon">
+        </a>
+      </div>
+
+      <div class="contact-inquiry">
+        <span class="inquiry-title">交流 / 合作 / 咨询</span>
+        <span class="inquiry-desc">投资判断 · AI 工作流设计 · AI × 财务</span>
+        <a href="mailto:hi@zhujianneil.com">hi@zhujianneil.com</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  筑见 NEIL · ZHUJIANNEIL.COM · MMXXVI
+</footer>
+
+<script>
+/* =================================================================
+   Breathing Background — ambient version of the "Breath" meditation
+   ================================================================= */
+(function() {
+  const cvs = document.getElementById('breath-bg');
+  if (!cvs) return;
+  const ctx = cvs.getContext('2d');
+  let W, H, cx, cy;
+  let t0 = performance.now();
+  let rings = [];
+  let particles = [];
+  let lastRingT = 0;
+  let heroVisible = true;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function resize() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    cvs.width = w * dpr;
+    cvs.height = h * dpr;
+    cvs.style.width = w + 'px';
+    cvs.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx = w / 2;
+    cy = h / 2;
+    W = w; H = h;
+  }
+
+  function spawnParticle() {
+    const a = Math.random() * Math.PI * 2;
+    const v = 0.12 + Math.random() * 0.22;
+    particles.push({
+      x: cx + (Math.random() - 0.5) * 24,
+      y: cy + (Math.random() - 0.5) * 24,
+      vx: Math.cos(a) * v,
+      vy: Math.sin(a) * v,
+      life: 1,
+      decay: 0.0018 + Math.random() * 0.003,
+      sz: 0.7 + Math.random() * 1.1,
+      hue: 188 + Math.random() * 28
+    });
+  }
+
+  function draw(now) {
+    const t = (now - t0) / 1000;
+    requestAnimationFrame(draw);
+
+    if (!heroVisible) return;
+
+    // fade trail
+    ctx.fillStyle = 'rgba(10,14,26,0.16)';
+    ctx.fillRect(0, 0, W, H);
+
+    const cycle = 6; // 6-second breath
+    const phase = (Math.sin(t * Math.PI * 2 / cycle - Math.PI / 2) + 1) / 2;
+    const baseR = Math.min(W, H) * 0.075;
+    const breathR = baseR * (1 + phase * 0.4);
+
+    // outer halo
+    const g1 = ctx.createRadialGradient(cx, cy, 0, cx, cy, breathR * 3.5);
+    g1.addColorStop(0, `rgba(110,200,225,${0.06 + phase * 0.04})`);
+    g1.addColorStop(0.5, `rgba(60,140,190,${0.025 + phase * 0.015})`);
+    g1.addColorStop(1, 'rgba(30,90,160,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, breathR * 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = g1;
+    ctx.fill();
+
+    // core orb
+    const g2 = ctx.createRadialGradient(cx, cy, 0, cx, cy, breathR);
+    g2.addColorStop(0, `rgba(200,230,245,${0.18 + phase * 0.1})`);
+    g2.addColorStop(0.45, `rgba(90,170,210,${0.09 + phase * 0.05})`);
+    g2.addColorStop(1, 'rgba(40,100,170,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, breathR, 0, Math.PI * 2);
+    ctx.fillStyle = g2;
+    ctx.fill();
+
+    // exhale ripple
+    if (t - lastRingT > cycle) {
+      rings.push({ r: breathR, op: 0.22, spd: 0.42 });
+      lastRingT = t;
+    }
+    for (let i = rings.length - 1; i >= 0; i--) {
+      const r = rings[i];
+      r.r += r.spd;
+      r.op *= 0.9938;
+      if (r.op < 0.005) { rings.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(cx, cy, r.r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(100,185,215,${r.op})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // particles (reduced density)
+    if (particles.length < 32 && Math.random() < 0.3) spawnParticle();
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      p.life -= p.decay;
+      if (p.life <= 0) { particles.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.sz, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${p.hue},55%,78%,${p.life * 0.28})`;
+      ctx.fill();
+    }
+  }
+
+  // perf: pause rendering when hero is not in view
+  window.addEventListener('scroll', () => {
+    heroVisible = window.scrollY < window.innerHeight;
+  }, { passive: true });
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+})();
+</script>
+
+</body>
+</html>
