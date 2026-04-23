@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>筑见 Neil — 搭骨架,看世界</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    /* Warm Dusk — deep warm ink, cream type, vermilion glow */
+    --bg:          #181210;
+    --bg-elev:     #1f1714;
+    --bg-deep:     #120c0a;
+    --cream:       #eadcc0;
+    --cream-soft:  #c7b693;
+    --cream-mute:  #8a7c66;
+    --cream-dim:   #574b3d;
+    --seal:        #d8563e;
+    --seal-warm:   #e67a5a;
+    --seal-deep:   #8a2a22;
+    --gold:        #c9a25a;
+    --rule:        rgba(234,220,192,0.10);
+    --rule-strong: rgba(234,220,192,0.20);
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Hiragino Sans GB", sans-serif;
+    font-size: 15px;
+    line-height: 1.78;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1, "palt" 1;
+    position: relative;
+  }
+
+  /* subtle warm grain */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.85 0 0 0 0 0.7 0 0 0 0 0.5 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 180px 180px;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 5;
+    mix-blend-mode: overlay;
+  }
+
+  /* Breathing canvas — ambient only */
+  #breath-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  main { position: relative; z-index: 1; }
+
+  /* ===================== HERO ===================== */
+  .hero {
+    min-height: 100svh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 56px 28px 48px;
+    position: relative;
+    text-align: center;
+  }
+
+  .hero-content {
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-seal {
+    width: 74px;
+    height: 74px;
+    border-radius: 2px;
+    margin: 0 auto 36px;
+    display: block;
+    filter: drop-shadow(0 6px 24px rgba(216,86,62,0.28));
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: "Cormorant Garamond", "Times New Roman", serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 0.45em;
+    color: var(--seal);
+    margin-bottom: 26px;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: "";
+    height: 1px;
+    width: 28px;
+    background: var(--seal);
+    opacity: 0.5;
+  }
+
+  .hero h1 {
+    font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
+    font-size: clamp(48px, 13vw, 68px);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 20px;
+  }
+  .hero h1 .neil {
+    font-family: "Cormorant Garamond", "Times New Roman", serif;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .hero .tagline {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: clamp(20px, 5.5vw, 24px);
+    color: var(--cream-soft);
+    letter-spacing: 0.24em;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+
+  .hero-identity {
+    font-size: 11.5px;
+    color: var(--cream-mute);
+    letter-spacing: 0.22em;
+    margin-bottom: 32px;
+    line-height: 1.8;
+    text-transform: uppercase;
+  }
+  .hero-identity .dot {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--seal);
+    vertical-align: middle;
+    margin: 0 12px;
+    transform: translateY(-1px);
+  }
+
+  .hero-cta {
+    color: var(--cream-mute);
+    font-size: 14px;
+    line-height: 1.9;
+    margin-bottom: 44px;
+  }
+
+  .cta-link {
+    color: var(--seal-warm);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(216,86,62,0.4);
+    padding-bottom: 2px;
+  }
+  .cta-link:active { opacity: 0.7; }
+
+  /* Pillars — bordered vignette cards */
+  .pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+  }
+
+  .pillar-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 20px 22px;
+    background: linear-gradient(135deg, rgba(234,220,192,0.025), rgba(234,220,192,0.01));
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .pillar-link::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--seal);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .pillar-link:active { border-color: var(--rule-strong); background: rgba(216,86,62,0.05); }
+  .pillar-link:active::before { opacity: 1; }
+
+  .pillar-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .pillar-key {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 20px;
+    color: var(--cream);
+    letter-spacing: 0.16em;
+  }
+  .pillar-en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--seal);
+    text-transform: uppercase;
+  }
+
+  .pillar-val {
+    color: var(--cream-mute);
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+
+  /* ===================== SECTIONS ===================== */
+  section.content {
+    padding: 100px 28px 80px;
+    position: relative;
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+  }
+
+  .section-inner { max-width: 520px; margin: 0 auto; }
+
+  .section-head { margin-bottom: 48px; text-align: center; }
+
+  .section-label {
+    font-family: "Cormorant Garamond", "Times New Roman", serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.35em;
+    color: var(--seal);
+    margin-bottom: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::before,
+  .section-label::after {
+    content: "";
+    width: 20px; height: 1px;
+    background: var(--seal);
+    opacity: 0.5;
+  }
+
+  .section-title {
+    font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
+    font-size: clamp(28px, 8vw, 36px);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--cream);
+    line-height: 1.25;
+  }
+  .section-title .accent { color: var(--seal-warm); }
+
+  /* ===================== WORKS ===================== */
+  .work-list { display: flex; flex-direction: column; }
+
+  .work {
+    display: block;
+    padding: 30px 0;
+    border-top: 1px solid var(--rule);
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition: padding-left 0.35s ease;
+  }
+  .work:last-child { border-bottom: 1px solid var(--rule); }
+  .work:active { padding-left: 10px; }
+
+  .work-num {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--seal);
+    letter-spacing: 0.28em;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .work-title {
+    font-family: "Songti SC", serif;
+    font-size: 23px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    letter-spacing: 0.06em;
+    color: var(--cream);
+    line-height: 1.3;
+  }
+
+  .work-desc {
+    color: var(--cream-mute);
+    font-size: 13.5px;
+    line-height: 1.75;
+    padding-right: 28px;
+  }
+  .work-desc strong { color: var(--cream-soft); font-weight: 600; }
+
+  .work-arrow {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    color: var(--cream-dim);
+    font-size: 18px;
+    font-family: "Songti SC", serif;
+  }
+
+  /* ===================== CONTACT ===================== */
+  .contact-intro {
+    color: var(--cream-mute);
+    font-size: 14px;
+    line-height: 2;
+    margin-bottom: 48px;
+    text-align: left;
+  }
+  .contact-intro .bullet { color: var(--seal); margin-right: 10px; }
+
+  .card {
+    padding: 36px 28px;
+    border: 1px solid var(--rule-strong);
+    margin-bottom: 28px;
+    text-align: center;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(216,86,62,0.08), transparent 70%),
+      rgba(234,220,192,0.02);
+    position: relative;
+  }
+  .card::before,
+  .card::after {
+    content: "";
+    position: absolute;
+    width: 18px; height: 18px;
+    border-color: var(--seal);
+  }
+  .card::before { top: -1px; left: -1px; border-top: 1px solid; border-left: 1px solid; }
+  .card::after { bottom: -1px; right: -1px; border-bottom: 1px solid; border-right: 1px solid; }
+
+  .card-title {
+    font-family: "Songti SC", serif;
+    font-size: 22px;
+    margin-bottom: 10px;
+    letter-spacing: 0.1em;
+    color: var(--cream);
+  }
+  .card-title .en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--seal);
+    letter-spacing: 0.24em;
+    margin-left: 10px;
+  }
+
+  .card-desc {
+    color: var(--cream-mute);
+    font-size: 13.5px;
+    margin-bottom: 24px;
+    line-height: 1.75;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background: var(--seal);
+    color: var(--bg);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.26em;
+    font-weight: 600;
+    font-family: "Songti SC", serif;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn:active { background: var(--seal-warm); transform: translateY(1px); }
+
+  .social-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 52px;
+  }
+
+  .social-img {
+    display: block;
+    padding: 10px;
+    border: 1px solid var(--rule);
+    background: rgba(234,220,192,0.02);
+    text-align: center;
+    text-decoration: none;
+    color: var(--cream-mute);
+  }
+  .social-img:active { border-color: var(--seal); background: rgba(216,86,62,0.06); }
+
+  .social-icon {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 8px;
+    filter: brightness(0.95);
+  }
+
+  .social-label {
+    font-family: "Songti SC", serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--cream-soft);
+  }
+
+  .contact-inquiry {
+    text-align: center;
+    padding: 36px 16px 0;
+    border-top: 1px solid var(--rule);
+    color: var(--cream-mute);
+    font-size: 13px;
+    line-height: 1.9;
+  }
+
+  .contact-inquiry .inquiry-title {
+    font-family: "Songti SC", serif;
+    color: var(--cream);
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .contact-inquiry .inquiry-desc {
+    font-size: 13px;
+    color: var(--cream-mute);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .contact-inquiry a {
+    color: var(--seal-warm);
+    text-decoration: none;
+    font-family: "Menlo", "Courier New", monospace;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(216,86,62,0.4);
+  }
+
+  /* ===================== FOOTER ===================== */
+  footer {
+    padding: 48px 28px 44px;
+    text-align: center;
+    font-size: 10px;
+    color: var(--cream-dim);
+    letter-spacing: 0.45em;
+    border-top: 1px solid var(--rule);
+    background: var(--bg-deep);
+    position: relative;
+    z-index: 1;
+    font-family: "Songti SC", serif;
+  }
+  footer .mark { color: var(--seal); margin: 0 8px; }
+
+  /* ================= LARGE-VIEWPORT ADJUSTMENTS ================= */
+  @media (min-width: 700px) {
+    .hero, section.content, footer { padding-left: 10vw; padding-right: 10vw; }
+    .hero-seal { width: 92px; height: 92px; }
+    .social-row { max-width: 480px; margin-left: auto; margin-right: auto; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="breath-bg"></canvas>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-content">
+      <img src="assets/hero_seal.png" alt="筑见 印" class="hero-seal">
+      <div class="hero-eyebrow">筑见 · ZHUJIAN</div>
+      <h1>我是 <span class="neil">Neil</span></h1>
+      <p class="tagline">搭骨架,看世界</p>
+      <p class="hero-identity">
+        CFO 出身<span class="dot"></span>价值投资<span class="dot"></span>AI 框架
+      </p>
+      <p class="hero-cta">
+        如果你也在用框架对抗噪音，我们可能有共鸣。<br>
+        <a href="#works" class="cta-link">看我的判断样本 →</a>
+      </p>
+
+      <div class="pillars">
+        <a href="#works-invest" class="pillar-link">
+          <div class="pillar-row">
+            <span class="pillar-key">投资</span>
+            <span class="pillar-en">i · Investment</span>
+          </div>
+          <p class="pillar-val">把判断纪律变成可运行的系统，不靠盘感，靠框架。</p>
+        </a>
+        <a href="#works-ai" class="pillar-link">
+          <div class="pillar-row">
+            <span class="pillar-key">AI</span>
+            <span class="pillar-en">ii · Framework</span>
+          </div>
+          <p class="pillar-val">把「怎么想」拆成可以运行的工作流。</p>
+        </a>
+        <a href="#works-meta" class="pillar-link">
+          <div class="pillar-row">
+            <span class="pillar-key">认知</span>
+            <span class="pillar-en">iii · Meta</span>
+          </div>
+          <p class="pillar-val">用内观和贝叶斯调试自己的决策操作系统。</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORKS ============ -->
+  <section class="content">
+    <div class="section-inner">
+      <div class="section-head">
+        <div class="section-label">Works · 作品</div>
+        <h2 class="section-title" id="works">判断力的<span class="accent">样本</span></h2>
+      </div>
+
+      <div class="work-list">
+        <a href="invest.html" class="work" target="_blank" rel="noopener" id="works-invest">
+          <div class="work-num">No. 001 — Investment</div>
+          <div class="work-title">价值投资工具集</div>
+          <div class="work-desc">多种投资辅助工具：腾讯 FCF 倍数卖出纪律、持仓监控系统、量化情绪探测器（用情绪因子发现市场极端点，配合价值投资做买入时机判断）。</div>
+          <div class="work-arrow">→</div>
+        </a>
+
+        <a href="ai.html" class="work" target="_blank" rel="noopener" id="works-ai">
+          <div class="work-num">No. 002 — Framework</div>
+          <div class="work-title">SKILL 合集</div>
+          <div class="work-desc"><strong>mirror · 观己</strong> 等 AI skill，把思维框架变成可运行的工具。把判断逻辑代码化，可复用、可检验。</div>
+          <div class="work-arrow">→</div>
+        </a>
+
+        <a href="meta.html" class="work" target="_blank" rel="noopener" id="works-meta">
+          <div class="work-num">No. 003 — Meta</div>
+          <div class="work-title">认知框架合集</div>
+          <div class="work-desc"><strong>TR-001 ~ 004</strong> — 把自己当系统调试，四条行为触发规则，处理分析替代执行、过度自信等典型失败模式。<strong>知识网络图谱</strong> — 辅助发现认知卡点。</div>
+          <div class="work-arrow">→</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="content">
+    <div class="section-inner">
+      <div class="section-head">
+        <div class="section-label">Contact · 保持联系</div>
+        <h2 class="section-title">或许我们<br>聊得<span class="accent">来</span></h2>
+      </div>
+
+      <p class="contact-intro">
+        <span class="bullet">·</span>想把 AI 嵌进业务流程，但不知道从哪下手<br>
+        <span class="bullet">·</span>在做价值投资，想交换判断框架<br>
+        <span class="bullet">·</span>对「把思维变成工具」这件事有兴趣
+      </p>
+
+      <div class="card">
+        <div class="card-title">开源 <span class="en">· GitHub</span></div>
+        <div class="card-desc">开源项目 · 代码 · 工具集</div>
+        <a href="https://github.com/zhujianneil" class="btn" target="_blank" rel="noopener">访问主页 →</a>
+      </div>
+
+      <div class="social-row">
+        <a href="#" class="social-img" target="_blank" rel="noopener">
+          <img src="social-gongzhonghao.jpg" alt="公众号" class="social-icon">
+          <div class="social-label">公众号</div>
+        </a>
+        <a href="#" class="social-img" target="_blank" rel="noopener">
+          <img src="social-video.jpg" alt="视频号" class="social-icon">
+          <div class="social-label">视频号</div>
+        </a>
+        <a href="#" class="social-img" target="_blank" rel="noopener">
+          <img src="social-xiaohongshu.jpg" alt="小红书" class="social-icon">
+          <div class="social-label">小红书</div>
+        </a>
+      </div>
+
+      <div class="contact-inquiry">
+        <span class="inquiry-title">交流 / 合作 / 咨询</span>
+        <span class="inquiry-desc">投资判断 · AI 工作流设计 · AI × 财务</span>
+        <a href="mailto:hi@zhujianneil.com">hi@zhujianneil.com</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  筑见 NEIL<span class="mark">·</span>ZHUJIANNEIL.COM<span class="mark">·</span>MMXXVI
+</footer>
+
+<script>
+/* =====================================================================
+   Warm Dusk Breath — the meditation orb, reskinned for a vermilion glow
+   against deep warm ink. Identical cadence to the original.
+   ===================================================================== */
+(function() {
+  const cvs = document.getElementById('breath-bg');
+  if (!cvs) return;
+  const ctx = cvs.getContext('2d');
+  let W, H, cx, cy;
+  let t0 = performance.now();
+  let rings = [];
+  let particles = [];
+  let lastRingT = 0;
+  let heroVisible = true;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function resize() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    cvs.width = w * dpr;
+    cvs.height = h * dpr;
+    cvs.style.width = w + 'px';
+    cvs.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx = w / 2;
+    // position orb behind the hero mark (upper area of hero)
+    cy = h * 0.38;
+    W = w; H = h;
+  }
+
+  function spawnParticle() {
+    const a = Math.random() * Math.PI * 2;
+    const v = 0.10 + Math.random() * 0.22;
+    particles.push({
+      x: cx + (Math.random() - 0.5) * 24,
+      y: cy + (Math.random() - 0.5) * 24,
+      vx: Math.cos(a) * v,
+      vy: Math.sin(a) * v,
+      life: 1,
+      decay: 0.0018 + Math.random() * 0.003,
+      sz: 0.6 + Math.random() * 1.0,
+      hue: 18 + Math.random() * 22    // warm amber → ember
+    });
+  }
+
+  function draw(now) {
+    const t = (now - t0) / 1000;
+    requestAnimationFrame(draw);
+
+    if (!heroVisible) return;
+
+    // warm ink trail fade
+    ctx.fillStyle = 'rgba(24,18,16,0.16)';
+    ctx.fillRect(0, 0, W, H);
+
+    const cycle = 6;
+    const phase = (Math.sin(t * Math.PI * 2 / cycle - Math.PI / 2) + 1) / 2;
+    const baseR = Math.min(W, H) * 0.085;
+    const breathR = baseR * (1 + phase * 0.4);
+
+    // outer halo — seal-red warmth bleeding into the dark
+    const g1 = ctx.createRadialGradient(cx, cy, 0, cx, cy, breathR * 4.0);
+    g1.addColorStop(0,   `rgba(216,86,62,${0.10 + phase * 0.06})`);
+    g1.addColorStop(0.4, `rgba(180,60,40,${0.04 + phase * 0.02})`);
+    g1.addColorStop(1,   'rgba(120,40,30,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, breathR * 4.0, 0, Math.PI * 2);
+    ctx.fillStyle = g1;
+    ctx.fill();
+
+    // core orb — bright ember
+    const g2 = ctx.createRadialGradient(cx, cy, 0, cx, cy, breathR);
+    g2.addColorStop(0,   `rgba(245,200,160,${0.22 + phase * 0.12})`);
+    g2.addColorStop(0.5, `rgba(216,86,62,${0.10 + phase * 0.06})`);
+    g2.addColorStop(1,   'rgba(120,40,30,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, breathR, 0, Math.PI * 2);
+    ctx.fillStyle = g2;
+    ctx.fill();
+
+    // exhale ripple
+    if (t - lastRingT > cycle) {
+      rings.push({ r: breathR, op: 0.24, spd: 0.42 });
+      lastRingT = t;
+    }
+    for (let i = rings.length - 1; i >= 0; i--) {
+      const r = rings[i];
+      r.r += r.spd;
+      r.op *= 0.9938;
+      if (r.op < 0.005) { rings.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(cx, cy, r.r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(220,110,80,${r.op})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // embers
+    if (particles.length < 28 && Math.random() < 0.28) spawnParticle();
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      p.life -= p.decay;
+      if (p.life <= 0) { particles.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.sz, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${p.hue},65%,70%,${p.life * 0.28})`;
+      ctx.fill();
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    heroVisible = window.scrollY < window.innerHeight;
+  }, { passive: true });
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+})();
+</script>
+
+</body>
+</html>
