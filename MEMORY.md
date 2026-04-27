@@ -27,23 +27,22 @@
 ## 文件映射（已验证正确，勿随意覆盖）
 
 | 文件名 | 内容 | 最后确认 |
-|--------|------|---------|
+|--------|------|---------| 
 | `index.html` | 首页 | ✓ |
 | `invest.html` | 投资工具集子页 | ✓ |
 | `social-gongzhonghao.jpg` | 公众号引流图 | ✓ |
 | `social-video.jpg` | 视频号引流图 | ✓ |
 | `social-xiaohongshu.jpg` | 小红书引流图 | ✓ |
-| `invest-clawbot.jpg` | 微信ClawBot估值查询截图 | ✓ |
-| `invest-email.jpg` | PE-TTM分析图（注意：文件名是email但内容是PE） | ✓ |
-| `invest-pe.jpg` | 邮件执行反馈截图（注意：文件名是pe但内容是邮件） | ✓ |
-| `invest-fcf.jpg` | FCF买入信号截图 | ✓ |
+| `invest-clawbot-800.jpg` | 微信ClawBot估值查询截图 | ✓ 2026-04-27 |
+| `email-correct-600.jpg` | 邮件执行反馈截图 | ✓ 2026-04-27 |
+| `pe-final-600.jpg` | PE-TTM分位分析截图 | ✓ 2026-04-27 |
 | `invest-lightgbm.jpg` | LightGBM回测截图 | ✓ |
 
 ## invest.html 图片顺序
 
-1. `invest-clawbot.jpg` → ClawBot 微信截图
-2. `invest-email.jpg` → PE-TTM 分析图
-3. `invest-pe.jpg` → 邮件执行反馈
+1. `invest-clawbot-800.jpg` → ClawBot 微信截图
+2. `email-correct-600.jpg` → 邮件执行反馈
+3. `pe-final-600.jpg` → PE-TTM 分位分析
 
 ## 关键规则
 
