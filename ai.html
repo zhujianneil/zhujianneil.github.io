@@ -49,12 +49,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
         <div class="output-grid">
           <div class="output-card">
-            <div class="kanji">脑</div>
+            <div class="kanji">心</div>
             <div class="output-title">心智轨迹</div>
             <div class="output-text">每个人在对话中的真实动机演化</div>
           </div>
           <div class="output-card">
-            <div class="kanji">波</div>
+            <div class="kanji">信</div>
             <div class="output-title">信号地图</div>
             <div class="output-text">谁发了什么信号，什么被接收，什么被忽略</div>
           </div>
@@ -79,50 +79,39 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <a href="https://github.com/zhujianneil/mirror" class="btn" target="_blank" rel="noopener">查看源码 · GitHub</a>
       </div>
 
-      <!-- Skill 2: NEIL-value invest -->
-      <div class="entry">
-        <div class="entry-num">No. 02 — 投资辅助</div>
-        <div class="entry-title">NEIL-value invest · 价值投资辅助</div>
-        <div class="entry-desc">把价值投资的判断纪律交给 AI 执行。估值查询、买卖信号、持仓监控 —— 不替你做决定，替你守住纪律。</div>
-        <a href="#" class="btn disabled">即将开源</a>
-      </div>
+    </div>
 
-      <!-- Skill 3: Edge LLM -->
-      <div class="entry">
-        <div class="entry-num">No. 03 — 本地推理</div>
-        <div class="entry-title">Edge LLM · 手机飞行模式也能跑</div>
-        <div class="entry-desc">Ollama 本地部署 + 手机端离线推理。把 AI 工具链从云端解耦 —— 数据不出设备，断网也能用。价值投资分析、认知工具，在任何角落都可以跑。</div>
+    <!-- Roadmap: 三个未发布合并成一个路线图 block -->
+    <div style="margin-top: 56px; padding: 32px 0 0; border-top: 1px solid var(--rule);">
+      <div class="section-label" style="margin-bottom: 18px;">Roadmap · 路线图</div>
+      <h3 style="font-family: 'Songti SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.06em; margin-bottom: 8px;">在路上的 skill</h3>
+      <p style="color: var(--ink-mute); font-size: 13px; line-height: 1.8; margin-bottom: 24px; max-width: 38ch;">已经跑通或正在训练，整理好就开源。</p>
 
-        <div class="tag-row">
-          <span class="tag">Ollama</span>
-          <span class="tag">llama.cpp</span>
-          <span class="tag">PocketPal</span>
-          <span class="tag">Qwen2.5-7B</span>
-          <span class="tag">离线可用</span>
+      <div style="display: flex; flex-direction: column; gap: 0;">
+        <div style="border-top: 1px solid var(--rule); padding: 18px 0;">
+          <div style="display:flex; gap:14px; align-items:baseline; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:11px; letter-spacing:0.25em; color: var(--seal); text-transform:uppercase; margin-bottom:6px;">
+            <span>No. 002</span><span style="color:var(--ink-mute); letter-spacing:0.18em;">2026.05 · drafting</span>
+          </div>
+          <div style="font-family:'Songti SC',serif; font-size:17px; color:var(--ink); letter-spacing:0.04em; margin-bottom:6px;">NEIL-value invest · 价值投资辅助</div>
+          <div style="font-size:13px; color:var(--ink-soft); line-height:1.7; max-width:42ch;">把价值投资的判断纪律交给 AI 执行。估值查询、买卖信号、持仓监控 —— 不替你做决定，替你守住纪律。</div>
         </div>
-        <a href="#" class="btn disabled">即将开源</a>
-      </div>
-
-      <!-- Skill 4: Fine-tune -->
-      <div class="entry">
-        <div class="entry-num">No. 04 — 模型定制</div>
-        <div class="entry-title">Fine-tune · 把判断框架注入模型</div>
-        <div class="entry-desc">用自己的投资笔记和认知框架，对开源模型做 LoRA 微调。不是调参数，是把"怎么判断"变成模型的内置逻辑。一个更懂我思维方式的本地模型。</div>
-        
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--seal); margin: 16px 0; letter-spacing: 0.1em; font-style: italic;">
-          Training in progress · 2026.04
+        <div style="border-top: 1px solid var(--rule); padding: 18px 0;">
+          <div style="display:flex; gap:14px; align-items:baseline; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:11px; letter-spacing:0.25em; color: var(--seal); text-transform:uppercase; margin-bottom:6px;">
+            <span>No. 003</span><span style="color:var(--ink-mute); letter-spacing:0.18em;">2026.06 · 已跑通整理中</span>
+          </div>
+          <div style="font-family:'Songti SC',serif; font-size:17px; color:var(--ink); letter-spacing:0.04em; margin-bottom:6px;">Edge LLM · 离线本地推理</div>
+          <div style="font-size:13px; color:var(--ink-soft); line-height:1.7; max-width:42ch;">本地部署 + 手机离线推理。数据不出设备，飞行模式也能跑。</div>
+          <div class="tag-row" style="margin-top:10px;"><span class="tag seal">数据不出设备</span><span class="tag">离线</span></div>
         </div>
-
-        <div class="tag-row">
-          <span class="tag">LoRA</span>
-          <span class="tag">Unsloth</span>
-          <span class="tag">Qwen2.5-7B</span>
-          <span class="tag">投资逻辑</span>
-          <span class="tag">认知框架</span>
+        <div style="border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 18px 0;">
+          <div style="display:flex; gap:14px; align-items:baseline; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:11px; letter-spacing:0.25em; color: var(--seal); text-transform:uppercase; margin-bottom:6px;">
+            <span>No. 004</span><span style="color:var(--ink-mute); letter-spacing:0.18em;">2026.04 · training in progress</span>
+          </div>
+          <div style="font-family:'Songti SC',serif; font-size:17px; color:var(--ink); letter-spacing:0.04em; margin-bottom:6px;">Fine-tune · 把判断框架注入模型</div>
+          <div style="font-size:13px; color:var(--ink-soft); line-height:1.7; max-width:42ch;">用自己的投资笔记和认知框架，对开源模型做 LoRA 微调。一个更懂我思维方式的本地模型。</div>
+          <div class="tag-row" style="margin-top:10px;"><span class="tag">LoRA</span><span class="tag">Qwen2.5-7B</span></div>
         </div>
-        <a href="#" class="btn disabled">即将开源</a>
       </div>
-
     </div>
 
     <div style="text-align: center; padding: 60px 0 20px; font-size: 13px; color: var(--ink-mute); letter-spacing: 0.1em;">
