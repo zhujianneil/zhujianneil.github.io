@@ -47,10 +47,159 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <p style="color: var(--ink-soft); font-size: 15px; max-width: 42ch; margin-bottom: 24px; line-height: 1.8;">每读一本书、每做一次分析，不是记完就存档——而是把新概念接入一张正在生长的网络。节点之间的连接比节点本身更重要。<br><br>点击"复利"，看到它同时连着留存收益、保险浮存金、安全边际。<br>点击"市盈率"，看到它和账面价值、透视盈余、特许经营权的关系。<br><br>这不是思维导图。这是一个有拓扑结构的认知索引。</p>
 
-    <div class="graph-images">
-      <img src="graph-compound-v2.jpg" alt="以复利为中心的知识网络" style="aspect-ratio: 4/3; object-fit: cover;">
-      <img src="graph-site.jpg" alt="知识网络截图" style="aspect-ratio: 4/3; object-fit: cover;">
+    <div class="kgraph-wrap">
+      <div class="kgraph-meta">
+        <div class="kgraph-hint" id="kgraph-hint">点任意节点 · 看它连着什么</div>
+        <div class="kgraph-legend"><span class="lg core">核心</span><span class="lg invest">投资</span><span class="lg meta">认知</span></div>
+      </div>
+      <svg id="kgraph" viewBox="0 0 800 540" role="img" aria-label="知识图谱"></svg>
+      <div class="kgraph-detail" id="kgraph-detail">
+        <div class="kg-empty">选中节点后，这里显示它的释义与邻居。</div>
+      </div>
     </div>
+    <style>
+      .kgraph-wrap { border: 1px solid var(--rule); background: var(--paper-warm); padding: 14px 14px 18px; margin: 10px 0 28px; }
+      .kgraph-meta { display:flex; justify-content:space-between; align-items:baseline; font-family:"Cormorant Garamond",serif; font-style:italic; font-size:11px; letter-spacing:0.22em; color:var(--ink-mute); text-transform:uppercase; padding: 2px 4px 12px; border-bottom: 1px solid var(--rule); margin-bottom: 10px; }
+      .kgraph-hint { color: var(--seal); font-style: normal; font-family: "Songti SC", serif; font-size: 12px; letter-spacing: 0.12em; }
+      .kgraph-legend { display:flex; gap:14px; }
+      .kgraph-legend .lg { display:inline-flex; align-items:center; gap:6px; font-style:normal; font-family:"Songti SC",serif; font-size:11px; letter-spacing:0.1em; color: var(--ink-soft); }
+      .kgraph-legend .lg::before { content:""; width:8px; height:8px; border-radius:50%; background: var(--ink-mute); }
+      .kgraph-legend .lg.core::before { background: var(--seal); }
+      .kgraph-legend .lg.invest::before { background: #4a6b7a; }
+      .kgraph-legend .lg.meta::before { background: #8a7a4a; }
+      #kgraph { display:block; width:100%; height:auto; max-height: 540px; cursor: default; }
+      #kgraph .edge { stroke: var(--rule); stroke-width: 1; transition: stroke 0.3s, stroke-width 0.3s, opacity 0.3s; }
+      #kgraph .edge.dim { opacity: 0.18; }
+      #kgraph .edge.active { stroke: var(--seal); stroke-width: 1.6; opacity: 1; }
+      #kgraph .node circle { fill: var(--paper); stroke: var(--ink-mute); stroke-width: 1; transition: fill 0.25s, stroke 0.25s, r 0.25s; cursor: pointer; }
+      #kgraph .node text { font-family: "Songti SC", "STSong", serif; fill: var(--ink); font-size: 13px; letter-spacing: 0.06em; cursor: pointer; pointer-events: none; user-select: none; }
+      #kgraph .node.core circle { stroke: var(--seal); fill: #fdf6ed; }
+      #kgraph .node.invest circle { stroke: #4a6b7a; }
+      #kgraph .node.meta circle { stroke: #8a7a4a; }
+      #kgraph .node.dim { opacity: 0.32; }
+      #kgraph .node.active circle { fill: var(--seal); stroke: var(--seal); }
+      #kgraph .node.active text { fill: var(--seal); font-weight: 600; }
+      #kgraph .node.neighbor circle { fill: #fdf6ed; stroke: var(--seal); }
+      #kgraph .node:hover circle { stroke: var(--seal); }
+      .kgraph-detail { min-height: 96px; padding: 14px 16px; background: var(--paper); border: 1px solid var(--rule); margin-top: 12px; font-size: 13.5px; line-height: 1.75; color: var(--ink-soft); }
+      .kg-empty { color: var(--ink-dim); font-family: "Songti SC", serif; letter-spacing: 0.06em; font-size: 13px; }
+      .kg-detail-title { font-family: "Songti SC", serif; font-size: 18px; color: var(--ink); letter-spacing: 0.06em; margin-bottom: 4px; }
+      .kg-detail-eyebrow { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 11px; letter-spacing: 0.22em; color: var(--seal); text-transform: uppercase; margin-bottom: 8px; }
+      .kg-detail-body { color: var(--ink-soft); margin-bottom: 10px; }
+      .kg-detail-edges { display:flex; flex-wrap:wrap; gap:6px; padding-top: 8px; border-top: 1px dashed var(--rule); }
+      .kg-edge-chip { font-family:"Songti SC",serif; font-size:12px; letter-spacing:0.06em; padding: 3px 10px; border:1px solid var(--rule); background: var(--paper-warm); color: var(--ink-soft); cursor: pointer; transition: all 0.2s; }
+      .kg-edge-chip:hover { border-color: var(--seal); color: var(--seal); }
+    </style>
+    <script>
+    (function(){
+      const NODES = [
+        // 核心
+        { id:"compound", label:"复利", group:"core", x:400, y:270, body:"时间 × 资本 × 不犯大错。所有节点最终都通向这里。" },
+        { id:"moat",     label:"护城河", group:"core", x:560, y:170, body:"特许经营权的现代说法。能否在长期保持高 ROE 不被竞争抹平。" },
+        { id:"margin",   label:"安全边际", group:"core", x:240, y:170, body:"价格远低于价值。错了不至于死，对了赚得更多。" },
+        // 投资
+        { id:"retained", label:"留存收益", group:"invest", x:560, y:340, body:"留下来的钱，是不是被用在了能产生超额回报的地方。" },
+        { id:"float",    label:"浮存金", group:"invest", x:660, y:280, body:"别人的钱，无息或负息地放在你这。保险公司的核心资产。" },
+        { id:"pe",       label:"市盈率", group:"invest", x:130, y:300, body:"价格/盈利。但盈利是真盈利吗？这是入口，不是答案。" },
+        { id:"book",     label:"账面价值", group:"invest", x:80,  y:200, body:"清算视角下的下限。和重置成本一起看才有意义。" },
+        { id:"throughput", label:"透视盈余", group:"invest", x:170, y:430, body:"把被投公司按持股比例算上的真实盈利。比报表数字更接近真相。" },
+        { id:"franchise", label:"特许经营权", group:"invest", x:680, y:120, body:"能涨价不流失客户的能力。护城河的另一个名字。" },
+        // 认知
+        { id:"frame",    label:"认知框架", group:"meta", x:400, y:90,  body:"看世界的脚手架。框架越清晰，噪声越容易被识别。" },
+        { id:"signal",   label:"信号噪声", group:"meta", x:530, y:440, body:"95% 的信息是噪声。问题不是更多信息，是更好的过滤器。" },
+        { id:"bias",     label:"行为偏差", group:"meta", x:300, y:430, body:"过度自信、确认偏误、近因效应。市场极端点是它们的合奏。" },
+        { id:"reading",  label:"深度阅读", group:"meta", x:380, y:170, body:"用 AI 读，不是让 AI 替我读。每篇文章是网络上多一条边的机会。" },
+        { id:"closing",  label:"闭环", group:"meta", x:430, y:380, body:"判断 → 执行 → 反馈 → 修正框架。没有闭环的判断不会进步。" },
+      ];
+      const EDGES = [
+        ["compound","retained"],["compound","float"],["compound","moat"],["compound","margin"],
+        ["compound","franchise"],["compound","reading"],["compound","closing"],
+        ["moat","franchise"],["moat","retained"],
+        ["margin","pe"],["margin","book"],["margin","bias"],
+        ["pe","book"],["pe","throughput"],
+        ["throughput","retained"],
+        ["frame","reading"],["frame","signal"],["frame","bias"],
+        ["reading","compound"],["reading","margin"],
+        ["signal","bias"],["signal","closing"],
+        ["closing","bias"],["closing","margin"],
+        ["float","retained"],
+      ];
+
+      const svg = document.getElementById("kgraph");
+      const detail = document.getElementById("kgraph-detail");
+      const hint = document.getElementById("kgraph-hint");
+      const ns = "http://www.w3.org/2000/svg";
+      const byId = {}; NODES.forEach(n => byId[n.id] = n);
+      const adj = {}; NODES.forEach(n => adj[n.id] = []);
+      EDGES.forEach(([a,b]) => { adj[a].push(b); adj[b].push(a); });
+
+      // edges
+      const edgeEls = {};
+      EDGES.forEach(([a,b]) => {
+        const A = byId[a], B = byId[b];
+        const line = document.createElementNS(ns, "line");
+        line.setAttribute("class", "edge");
+        line.setAttribute("x1", A.x); line.setAttribute("y1", A.y);
+        line.setAttribute("x2", B.x); line.setAttribute("y2", B.y);
+        line.dataset.a = a; line.dataset.b = b;
+        svg.appendChild(line);
+        edgeEls[a+"|"+b] = line;
+      });
+
+      // nodes
+      const nodeEls = {};
+      NODES.forEach(n => {
+        const g = document.createElementNS(ns, "g");
+        g.setAttribute("class", "node " + n.group);
+        g.setAttribute("transform", `translate(${n.x},${n.y})`);
+        g.dataset.id = n.id;
+        const r = n.group === "core" ? 9 : 6;
+        const c = document.createElementNS(ns, "circle");
+        c.setAttribute("r", r);
+        const t = document.createElementNS(ns, "text");
+        t.setAttribute("y", r + 16);
+        t.setAttribute("text-anchor", "middle");
+        t.textContent = n.label;
+        g.appendChild(c); g.appendChild(t);
+        g.addEventListener("click", () => select(n.id));
+        svg.appendChild(g);
+        nodeEls[n.id] = g;
+      });
+
+      function clearState() {
+        Object.values(nodeEls).forEach(g => g.classList.remove("active","neighbor","dim"));
+        Object.values(edgeEls).forEach(e => e.classList.remove("active","dim"));
+      }
+      function select(id) {
+        clearState();
+        const node = byId[id];
+        const neighbors = new Set(adj[id]);
+        Object.entries(nodeEls).forEach(([nid, g]) => {
+          if (nid === id) g.classList.add("active");
+          else if (neighbors.has(nid)) g.classList.add("neighbor");
+          else g.classList.add("dim");
+        });
+        Object.entries(edgeEls).forEach(([key, e]) => {
+          const [a,b] = key.split("|");
+          if (a === id || b === id) e.classList.add("active");
+          else e.classList.add("dim");
+        });
+        hint.textContent = "「" + node.label + "」连着 " + adj[id].length + " 个节点 · 点击下方任意邻居跳转";
+        const edgesHtml = adj[id].map(nid => `<span class="kg-edge-chip" data-jump="${nid}">${byId[nid].label}</span>`).join("");
+        detail.innerHTML = `
+          <div class="kg-detail-eyebrow">${node.group === "core" ? "Core Node" : node.group === "invest" ? "Investment" : "Meta"}</div>
+          <div class="kg-detail-title">${node.label}</div>
+          <div class="kg-detail-body">${node.body}</div>
+          <div class="kg-detail-edges">${edgesHtml}</div>
+        `;
+        detail.querySelectorAll("[data-jump]").forEach(el => {
+          el.addEventListener("click", () => select(el.dataset.jump));
+        });
+      }
+      // start with compound highlighted softly
+      select("compound");
+    })();
+    </script>
 
     <div class="info-cards">
       <div class="info-card">
