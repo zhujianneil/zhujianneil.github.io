@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>筑见 Neil — 搭骨架,看世界</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    /* Paper & Seal — warm handcraft editorial */
+    --paper:        #f2e9d8;
+    --paper-deep:   #ebe1cc;
+    --paper-warm:   #f6eeda;
+    --ink:          #1a1612;
+    --ink-soft:     #3d342a;
+    --ink-mute:     #7a6e5e;
+    --ink-dim:      #a89d89;
+    --seal:         #b13a2f;
+    --seal-deep:    #8a2a22;
+    --seal-glow:    rgba(177,58,47,0.12);
+    --rule:         rgba(26,22,18,0.12);
+    --rule-soft:    rgba(26,22,18,0.06);
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Hiragino Sans GB", sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-feature-settings: "kern" 1, "palt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+  }
+
+  /* Paper texture — fine grain overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(139,106,60,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(139,106,60,0.03) 0%, transparent 50%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 100%, 100%, 180px 180px;
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+
+  main { position: relative; z-index: 2; }
+
+  /* vertical side rule — editorial anchor */
+  .edge-rule {
+    position: fixed;
+    left: 22px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--rule);
+    z-index: 3;
+    pointer-events: none;
+  }
+  .edge-stamp {
+    position: fixed;
+    left: 14px;
+    top: 40px;
+    writing-mode: vertical-rl;
+    font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
+    font-size: 10px;
+    letter-spacing: 0.6em;
+    color: var(--ink-dim);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  /* ===================== HERO ===================== */
+  .hero {
+    min-height: 100svh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 32px 40px 48px;
+    position: relative;
+  }
+
+  .hero-mark-wrap {
+    position: relative;
+    width: 132px;
+    height: 132px;
+    margin-bottom: 36px;
+  }
+
+  #seal-canvas {
+    position: absolute;
+    inset: -40px;
+    width: calc(100% + 80px);
+    height: calc(100% + 80px);
+    z-index: 0;
+  }
+
+  .hero-mark {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+    object-fit: cover;
+    filter: drop-shadow(0 2px 8px rgba(90,30,20,0.18));
+  }
+
+  .hero-eyebrow {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    color: var(--seal);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .hero-eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 1px;
+    background: var(--seal);
+    vertical-align: middle;
+    margin-right: 14px;
+    transform: translateY(-2px);
+  }
+
+  .hero h1 {
+    font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
+    font-size: clamp(44px, 12vw, 62px);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .hero h1 .neil {
+    font-family: "Cormorant Garamond", "Times New Roman", serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .hero .tagline {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: clamp(18px, 5vw, 22px);
+    color: var(--ink-soft);
+    letter-spacing: 0.18em;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+
+  .hero-identity {
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.14em;
+    margin-bottom: 28px;
+    line-height: 1.8;
+  }
+  .hero-identity .dot {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--seal);
+    vertical-align: middle;
+    margin: 0 10px;
+    transform: translateY(-1px);
+  }
+
+  .hero-cta {
+    color: var(--ink-mute);
+    font-size: 14px;
+    line-height: 1.9;
+    margin-bottom: 40px;
+    max-width: 30ch;
+  }
+
+  .cta-link {
+    color: var(--seal);
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    border-bottom: 1px solid var(--seal);
+    padding-bottom: 1px;
+  }
+  .cta-link:active { opacity: 0.7; }
+
+  /* Pillars — horizontal stack, tactile */
+  .pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 8px;
+  }
+
+  .pillar-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border-top: 1px solid var(--rule);
+    padding: 22px 2px 22px 0;
+    transition: padding-left 0.35s ease;
+    position: relative;
+  }
+  .pillar-link:last-child { border-bottom: 1px solid var(--rule); }
+  .pillar-link:active { padding-left: 8px; }
+
+  .pillar-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .pillar-key {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: 0.14em;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .pillar-key::before {
+    content: attr(data-en);
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--seal);
+    margin-bottom: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .pillar-arrow {
+    font-family: "Songti SC", serif;
+    color: var(--ink-dim);
+    font-size: 18px;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .pillar-link:active .pillar-arrow {
+    color: var(--seal);
+    transform: translateX(4px);
+  }
+
+  .pillar-val {
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    line-height: 1.75;
+    margin-top: 10px;
+    max-width: 34ch;
+  }
+
+  /* ===================== SECTIONS ===================== */
+  section.content {
+    padding: 96px 32px 80px 48px;
+    position: relative;
+    border-top: 1px solid var(--rule);
+  }
+
+  .section-head {
+    margin-bottom: 48px;
+  }
+
+  .section-label {
+    font-family: "Cormorant Garamond", "Times New Roman", serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--seal);
+    margin-bottom: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .section-label::before {
+    content: "§ ";
+    font-style: normal;
+    color: var(--seal);
+    margin-right: 4px;
+  }
+
+  .section-title {
+    font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
+    font-size: clamp(28px, 8vw, 36px);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  .section-title .accent {
+    color: var(--seal);
+  }
+
+  /* ===================== WORKS ===================== */
+  .work-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work {
+    display: block;
+    padding: 28px 0;
+    border-top: 1px solid var(--rule);
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition: padding-left 0.35s ease;
+  }
+  .work:last-child { border-bottom: 1px solid var(--rule); }
+  .work:active { padding-left: 8px; }
+
+  .work-num {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--seal);
+    letter-spacing: 0.25em;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .work-title {
+    font-family: "Songti SC", serif;
+    font-size: 23px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .work-desc {
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    line-height: 1.75;
+    max-width: 40ch;
+  }
+  .work-desc strong { color: var(--ink); font-weight: 600; }
+
+  .work-arrow {
+    position: absolute;
+    top: 28px;
+    right: 0;
+    font-family: "Songti SC", serif;
+    color: var(--ink-dim);
+    font-size: 16px;
+  }
+
+  /* ===================== CONTACT ===================== */
+  .contact-intro {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.95;
+    margin-bottom: 48px;
+    max-width: 36ch;
+  }
+  .contact-intro .bullet {
+    color: var(--seal);
+    margin-right: 8px;
+  }
+
+  .card {
+    padding: 32px 26px;
+    border: 1px solid var(--rule);
+    margin-bottom: 24px;
+    position: relative;
+    background: linear-gradient(180deg, rgba(246,238,218,0.5), transparent);
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: -1px; left: -1px;
+    width: 16px; height: 16px;
+    border-top: 1px solid var(--seal);
+    border-left: 1px solid var(--seal);
+  }
+  .card::after {
+    content: "";
+    position: absolute;
+    bottom: -1px; right: -1px;
+    width: 16px; height: 16px;
+    border-bottom: 1px solid var(--seal);
+    border-right: 1px solid var(--seal);
+  }
+
+  .card-title {
+    font-family: "Songti SC", serif;
+    font-size: 22px;
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+  }
+  .card-title .en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--seal);
+    letter-spacing: 0.2em;
+    margin-left: 10px;
+    font-weight: 500;
+  }
+
+  .card-desc {
+    color: var(--ink-mute);
+    font-size: 13.5px;
+    margin-bottom: 22px;
+    line-height: 1.75;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    background: var(--ink);
+    color: var(--paper-warm);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    font-weight: 500;
+    font-family: "Songti SC", serif;
+    transition: background 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .btn::after {
+    content: " →";
+    font-family: "Songti SC", serif;
+  }
+  .btn:active { background: var(--seal); transform: translateY(1px); }
+
+  .social-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 56px;
+  }
+
+  .social-img {
+    display: block;
+    padding: 10px;
+    border: 1px solid var(--rule);
+    background: var(--paper-warm);
+    text-align: center;
+    text-decoration: none;
+    color: var(--ink-mute);
+    transition: border-color 0.2s;
+  }
+  .social-img:active { border-color: var(--seal); }
+
+  .social-icon {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .social-label {
+    font-family: "Songti SC", serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+  }
+
+  .contact-inquiry {
+    text-align: left;
+    padding: 36px 0 0;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-mute);
+    font-size: 13px;
+    line-height: 1.9;
+  }
+
+  .contact-inquiry .inquiry-title {
+    font-family: "Songti SC", serif;
+    color: var(--ink);
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .contact-inquiry .inquiry-desc {
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin-bottom: 18px;
+    display: block;
+  }
+
+  .contact-inquiry a {
+    color: var(--seal);
+    text-decoration: none;
+    font-family: "Menlo", "Courier New", monospace;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--seal-deep);
+  }
+
+  /* ===================== FOOTER ===================== */
+  footer {
+    padding: 48px 32px 40px 48px;
+    text-align: left;
+    font-size: 10px;
+    color: var(--ink-dim);
+    letter-spacing: 0.4em;
+    border-top: 1px solid var(--rule);
+    background: var(--paper-deep);
+    position: relative;
+    z-index: 2;
+    font-family: "Songti SC", serif;
+  }
+  footer .mark {
+    color: var(--seal);
+    margin: 0 6px;
+  }
+
+  /* ================= LARGE-VIEWPORT ADJUSTMENTS ================= */
+  @media (min-width: 700px) {
+    .hero, section.content, footer { padding-left: 10vw; padding-right: 10vw; }
+    .edge-rule { left: 5vw; }
+    .edge-stamp { left: calc(5vw - 8px); }
+    .hero-mark-wrap { width: 160px; height: 160px; }
+    .social-row { max-width: 480px; }
+  }
+  @media (min-width: 1000px) {
+    .hero, section.content, footer { padding-left: 16vw; padding-right: 16vw; }
+    .edge-rule { left: 8vw; }
+    .edge-stamp { left: calc(8vw - 8px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="edge-rule"></div>
+<div class="edge-stamp">筑 · 见 · ZHUJIAN · MMXXVI</div>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-mark-wrap">
+      <canvas id="seal-canvas"></canvas>
+      <img src="assets/hero_seal.png" alt="筑见 印" class="hero-mark">
+    </div>
+
+    <div class="hero-eyebrow">筑见 · ZHUJIAN</div>
+    <h1>我是 <span class="neil">Neil</span>。</h1>
+    <p class="tagline">搭骨架,看世界</p>
+    <p class="hero-identity">
+      CFO 出身<span class="dot"></span>价值投资<span class="dot"></span>AI 框架建造
+    </p>
+    <p class="hero-cta">
+      如果你也在用框架对抗噪音，我们可能有共鸣。<br>
+      <a href="#works" class="cta-link">看我的判断样本 →</a>
+    </p>
+
+    <div class="pillars">
+      <a href="#works-invest" class="pillar-link">
+        <div class="pillar-row">
+          <span class="pillar-key" data-en="i · Investment">投资</span>
+          <span class="pillar-arrow">→</span>
+        </div>
+        <p class="pillar-val">把判断纪律变成可运行的系统，不靠盘感，靠框架。</p>
+      </a>
+      <a href="#works-ai" class="pillar-link">
+        <div class="pillar-row">
+          <span class="pillar-key" data-en="ii · Framework">AI</span>
+          <span class="pillar-arrow">→</span>
+        </div>
+        <p class="pillar-val">把「怎么想」拆成可以运行的工作流。</p>
+      </a>
+      <a href="#works-meta" class="pillar-link">
+        <div class="pillar-row">
+          <span class="pillar-key" data-en="iii · Meta">认知</span>
+          <span class="pillar-arrow">→</span>
+        </div>
+        <p class="pillar-val">用内观和贝叶斯调试自己的决策操作系统。</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ WORKS ============ -->
+  <section class="content">
+    <div class="section-head">
+      <div class="section-label">Works · 作品</div>
+      <h2 class="section-title" id="works">判断力的<span class="accent">样本</span></h2>
+    </div>
+
+    <div class="work-list">
+      <a href="invest.html" class="work" target="_blank" rel="noopener" id="works-invest">
+        <div class="work-num">No. 001 — Investment</div>
+        <div class="work-title">价值投资工具集</div>
+        <div class="work-desc">多种投资辅助工具：腾讯 FCF 倍数卖出纪律、持仓监控系统、量化情绪探测器（用情绪因子发现市场极端点，配合价值投资做买入时机判断）。</div>
+        <div class="work-arrow">→</div>
+      </a>
+
+      <a href="ai.html" class="work" target="_blank" rel="noopener" id="works-ai">
+        <div class="work-num">No. 002 — Framework</div>
+        <div class="work-title">SKILL 合集</div>
+        <div class="work-desc"><strong>mirror · 观己</strong> 等 AI skill，把思维框架变成可运行的工具。把判断逻辑代码化，可复用、可检验。</div>
+        <div class="work-arrow">→</div>
+      </a>
+
+      <a href="meta.html" class="work" target="_blank" rel="noopener" id="works-meta">
+        <div class="work-num">No. 003 — Meta</div>
+        <div class="work-title">认知框架合集</div>
+        <div class="work-desc"><strong>TR-001 ~ 004</strong> — 把自己当系统调试，四条行为触发规则，处理分析替代执行、过度自信等典型失败模式。<strong>知识网络图谱</strong> — 辅助发现认知卡点。</div>
+        <div class="work-arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="content">
+    <div class="section-head">
+      <div class="section-label">Contact · 保持联系</div>
+      <h2 class="section-title">或许我们<br>聊得<span class="accent">来</span></h2>
+    </div>
+
+    <p class="contact-intro">
+      <span class="bullet">·</span>想把 AI 嵌进业务流程，但不知道从哪下手<br>
+      <span class="bullet">·</span>在做价值投资，想交换判断框架<br>
+      <span class="bullet">·</span>对「把思维变成工具」这件事有兴趣
+    </p>
+
+    <div class="card">
+      <div class="card-title">开源 <span class="en">· GitHub</span></div>
+      <div class="card-desc">开源项目 · 代码 · 工具集</div>
+      <a href="https://github.com/zhujianneil" class="btn" target="_blank" rel="noopener">访问主页</a>
+    </div>
+
+    <div class="social-row">
+      <a href="#" class="social-img" target="_blank" rel="noopener">
+        <img src="social-gongzhonghao.jpg" alt="公众号" class="social-icon">
+        <div class="social-label">公众号</div>
+      </a>
+      <a href="#" class="social-img" target="_blank" rel="noopener">
+        <img src="social-video.jpg" alt="视频号" class="social-icon">
+        <div class="social-label">视频号</div>
+      </a>
+      <a href="#" class="social-img" target="_blank" rel="noopener">
+        <img src="social-xiaohongshu.jpg" alt="小红书" class="social-icon">
+        <div class="social-label">小红书</div>
+      </a>
+    </div>
+
+    <div class="contact-inquiry">
+      <span class="inquiry-title">交流 / 合作 / 咨询</span>
+      <span class="inquiry-desc">投资判断 · AI 工作流设计 · AI × 财务</span>
+      <a href="mailto:hi@zhujianneil.com">hi@zhujianneil.com</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  筑见 NEIL<span class="mark">·</span>ZHUJIANNEIL.COM<span class="mark">·</span>MMXXVI
+</footer>
+
+<script>
+/* =====================================================================
+   Seal Ink Bloom — a warm breathing halo around the 筑见 chop.
+   Same meditation metaphor, redesigned as red ink seeping into paper.
+   ===================================================================== */
+(function() {
+  const cvs = document.getElementById('seal-canvas');
+  if (!cvs) return;
+  const ctx = cvs.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let W, H, cx, cy;
+  let t0 = performance.now();
+  let rings = [];
+  let lastRingT = 0;
+
+  function resize() {
+    const rect = cvs.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    cvs.width = W * dpr;
+    cvs.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx = W / 2; cy = H / 2;
+  }
+
+  function draw(now) {
+    const t = (now - t0) / 1000;
+    requestAnimationFrame(draw);
+
+    ctx.clearRect(0, 0, W, H);
+
+    const cycle = 7;
+    const phase = (Math.sin(t * Math.PI * 2 / cycle - Math.PI / 2) + 1) / 2;
+
+    const baseR = Math.min(W, H) * 0.32;
+    const breathR = baseR * (1 + phase * 0.35);
+
+    // warm outer bloom — seal red seeping into paper
+    const g1 = ctx.createRadialGradient(cx, cy, baseR * 0.5, cx, cy, breathR * 1.8);
+    g1.addColorStop(0, `rgba(177,58,47,${0.10 + phase * 0.08})`);
+    g1.addColorStop(0.55, `rgba(177,58,47,${0.04 + phase * 0.03})`);
+    g1.addColorStop(1, 'rgba(177,58,47,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, breathR * 1.8, 0, Math.PI * 2);
+    ctx.fillStyle = g1;
+    ctx.fill();
+
+    // exhale ripple
+    if (t - lastRingT > cycle) {
+      rings.push({ r: baseR * 1.05, op: 0.28, spd: 0.35 });
+      lastRingT = t;
+    }
+    for (let i = rings.length - 1; i >= 0; i--) {
+      const r = rings[i];
+      r.r += r.spd;
+      r.op *= 0.991;
+      if (r.op < 0.008) { rings.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(cx, cy, r.r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(138,42,34,${r.op})`;
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+    }
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+})();
+</script>
+
+</body>
+</html>
