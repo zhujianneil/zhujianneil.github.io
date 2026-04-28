@@ -86,28 +86,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     line-height: 1.5;
     margin-bottom: 24px;
   }
-  .hero-identity {
-    font-size: 12px;
-    color: var(--ink-mute);
-    letter-spacing: 0.14em;
-    margin-bottom: 28px;
-    line-height: 1.8;
+  .hero .tagline { margin-bottom: 56px; }
+  .hero-hook {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: clamp(15px, 4.2vw, 18px);
+    color: var(--ink-soft);
+    line-height: 1.85;
+    letter-spacing: 0.04em;
+    max-width: 30ch;
+    margin-bottom: 14px;
   }
-  .hero-identity .dot {
-    display: inline-block;
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: var(--seal);
-    vertical-align: middle;
-    margin: 0 10px;
-    transform: translateY(-1px);
-  }
+  .hero-hook .accent { color: var(--seal); }
   .hero-cta {
     color: var(--ink-mute);
-    font-size: 14px;
+    font-size: 13px;
+    letter-spacing: 0.18em;
     line-height: 1.9;
-    margin-bottom: 40px;
-    max-width: 30ch;
+    margin-bottom: 56px;
   }
   .cta-link {
     color: var(--seal);
@@ -169,6 +164,84 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     margin-top: 10px;
     max-width: 34ch;
   }
+
+  /* ========== Recency / Latest works ========== */
+  .latest-list { display: flex; flex-direction: column; }
+  .latest {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-top: 1px solid var(--rule);
+    padding: 28px 0;
+    transition: padding-left 0.35s ease;
+  }
+  .latest:last-child { border-bottom: 1px solid var(--rule); }
+  .latest:active { padding-left: 8px; }
+  .latest-meta {
+    display: flex; gap: 14px; align-items: baseline;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--seal);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .latest-meta .date { color: var(--ink-mute); font-style: normal; letter-spacing: 0.18em; }
+  .latest-title {
+    font-family: "Songti SC", serif;
+    font-size: 20px;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  .latest-desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    max-width: 40ch;
+  }
+  .latest.featured { padding: 36px 0; }
+  .featured-image {
+    margin: 16px 0 18px;
+    position: relative;
+    border: 1px solid var(--rule);
+    background: var(--paper-warm);
+    overflow: hidden;
+  }
+  .featured-image img {
+    display: block; width: 100%; height: auto;
+    filter: sepia(.08) saturate(.92);
+  }
+  .featured-image::before, .featured-image::after {
+    content: ""; position: absolute;
+    width: 14px; height: 14px;
+    border-color: var(--seal);
+  }
+  .featured-image::before { top: -1px; left: -1px; border-top: 1px solid; border-left: 1px solid; }
+  .featured-image::after { bottom: -1px; right: -1px; border-bottom: 1px solid; border-right: 1px solid; }
+  .featured-quote {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: clamp(17px, 4.4vw, 20px);
+    color: var(--ink);
+    line-height: 1.65;
+    letter-spacing: 0.04em;
+    border-left: 2px solid var(--seal);
+    padding: 8px 0 8px 16px;
+    margin: 12px 0 6px;
+  }
+  .featured-quote .accent { color: var(--seal); }
+  .featured-source {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    margin-top: 14px;
+  }
+  .featured-source .arrow { color: var(--seal); margin-left: 6px; font-style: normal; }
 
   /* ========== Contact ========== */
   .contact-intro {
@@ -305,12 +378,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="hero-eyebrow">筑见 · ZHUJIAN</div>
     <h1>我是 <span class="neil">Neil</span>。</h1>
     <p class="tagline">搭骨架,看世界</p>
-    <p class="hero-identity">
-      CFO 出身<span class="dot"></span>价值投资<span class="dot"></span>AI 框架建造
+    <p class="hero-hook">
+      用 AI 读，<span class="accent">不是让 AI 替我读</span>。<br>
+      盯基本面，不盯股价。
     </p>
     <p class="hero-cta">
-      如果你也在用框架对抗噪音，我们可能有共鸣。<br>
-      <a href="#works" class="cta-link">看我的判断样本 →</a>
+      <a href="#proof" class="cta-link">↓ 看一张图说清楚</a>
     </p>
 
     <div class="pillars">
@@ -338,31 +411,48 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
   </section>
 
-  <section class="content">
+  <section class="content" id="proof">
     <div class="section-head">
-      <div class="section-label">Works · 作品</div>
-      <h2 class="section-title" id="works">判断力的<span class="accent">样本</span></h2>
+      <div class="section-label">Latest · 最近在做</div>
+      <h2 class="section-title">一张图讲清楚<br>我怎么<span class="accent">看</span></h2>
     </div>
 
-    <div class="entry-list">
-      <a href="invest.html" class="entry" id="works-invest">
-        <div class="entry-num">No. 001 — Investment</div>
-        <div class="entry-title">价值投资工具集</div>
-        <div class="entry-desc">多种投资辅助工具：腾讯 FCF 倍数卖出纪律、持仓监控系统、量化情绪探测器（用情绪因子发现市场极端点，配合价值投资做买入时机判断）。</div>
-        <div class="entry-arrow">→</div>
+    <div class="latest-list">
+
+      <a href="invest.html" class="latest featured">
+        <div class="latest-meta">
+          <span>No. 001 · Investment</span>
+          <span class="date">2026.04</span>
+        </div>
+        <div class="latest-title">三层估值面板 · 验证基本面</div>
+        <div class="featured-image">
+          <img src="invest-buy-snapshot.png" alt="三层估值面板：企业 +98.5% / 估值 -88.4% / 股价 +10.1%">
+        </div>
+        <div class="featured-quote">
+          企业 <span class="accent">+98.5%</span>、估值 <span class="accent">-88.4%</span>、股价 <span class="accent">+10.1%</span>。<br>
+          只要净资产、净利润上涨，股价最终也会上涨。
+        </div>
+        <div class="featured-source">读三层面板的全文 <span class="arrow">→</span></div>
       </a>
-      <a href="ai.html" class="entry" id="works-ai">
-        <div class="entry-num">No. 002 — Framework</div>
-        <div class="entry-title">SKILL 合集</div>
-        <div class="entry-desc"><strong>mirror · 观己</strong> 等 AI skill，把思维框架变成可运行的工具。把判断逻辑代码化，可复用、可检验。</div>
-        <div class="entry-arrow">→</div>
+
+      <a href="ai.html" class="latest">
+        <div class="latest-meta">
+          <span>No. 002 · Skill</span>
+          <span class="date">2026.03</span>
+        </div>
+        <div class="latest-title">mirror · 观己 — 把对话当镜子</div>
+        <div class="latest-desc">一个 vipassanā 式自我观察 skill。不做裁判，只把你在那个场里的真实运作放回你面前 — 心智轨迹、信号地图、场的诊断、你的位置。</div>
       </a>
-      <a href="meta.html" class="entry" id="works-meta">
-        <div class="entry-num">No. 003 — Meta</div>
-        <div class="entry-title">认知框架合集</div>
-        <div class="entry-desc"><strong>TR-001 ~ 004</strong> — 把自己当系统调试，四条行为触发规则，处理分析替代执行、过度自信等典型失败模式。<strong>知识网络图谱</strong> — 辅助发现认知卡点。</div>
-        <div class="entry-arrow">→</div>
+
+      <a href="meta.html" class="latest">
+        <div class="latest-meta">
+          <span>No. 003 · Meta</span>
+          <span class="date">2026.02</span>
+        </div>
+        <div class="latest-title">阅读闭环 · 筛 · 称 · 收 · 拆 · 接 · 候</div>
+        <div class="latest-desc">六步阅读协议。AI 负责翻译、结构标注、上下文补全；你负责提问、连接、判断「这对我有什么用」。输出不是摘要，是并入你知识网络的新节点。</div>
       </a>
+
     </div>
   </section>
 
