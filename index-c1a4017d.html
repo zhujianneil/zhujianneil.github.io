@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M53G5WD7');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>筑见 Neil — 搭骨架,看世界</title>
+<meta name="description" content="Neil · 价值投资 · AI 工作流 · 认知。三地股票的判断,AI 的工作流,一阴一阳的认知。">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ========== Home-only overrides ========== */
+  .hero {
+    min-height: 100svh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 32px 40px 48px;
+    position: relative;
+  }
+  .hero-mark-wrap {
+    position: relative;
+    width: 132px;
+    height: 132px;
+    margin-bottom: 36px;
+  }
+  #seal-canvas {
+    position: absolute;
+    inset: -40px;
+    width: calc(100% + 80px);
+    height: calc(100% + 80px);
+    z-index: 0;
+  }
+  .hero-mark {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+    object-fit: cover;
+    filter: drop-shadow(0 2px 8px rgba(90,30,20,0.18));
+  }
+  .hero-eyebrow {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    color: var(--seal);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .hero-eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 18px; height: 1px;
+    background: var(--seal);
+    vertical-align: middle;
+    margin-right: 14px;
+    transform: translateY(-2px);
+  }
+  .hero h1 {
+    font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
+    font-size: clamp(44px, 12vw, 62px);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .hero h1 .neil {
+    font-family: "Cormorant Garamond", "Times New Roman", serif;
+    font-style: italic;
+  }
+  .hero .tagline {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: clamp(18px, 5vw, 22px);
+    color: var(--ink-soft);
+    letter-spacing: 0.18em;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+  .hero-identity {
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.14em;
+    margin-bottom: 28px;
+    line-height: 1.8;
+  }
+  .hero-identity .dot {
+    display: inline-block;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--seal);
+    vertical-align: middle;
+    margin: 0 10px;
+    transform: translateY(-1px);
+  }
+  .hero-cta {
+    color: var(--ink-mute);
+    font-size: 14px;
+    line-height: 1.9;
+    margin-bottom: 40px;
+    max-width: 30ch;
+  }
+  .cta-link {
+    color: var(--seal);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--seal);
+    padding-bottom: 1px;
+  }
+  .pillars { display: flex; flex-direction: column; margin-top: 8px; }
+  .pillar-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border-top: 1px solid var(--rule);
+    padding: 22px 2px 22px 0;
+    transition: padding-left 0.35s ease;
+  }
+  .pillar-link:last-child { border-bottom: 1px solid var(--rule); }
+  .pillar-link:active { padding-left: 8px; }
+  .pillar-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .pillar-key {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: 0.14em;
+    position: relative;
+  }
+  .pillar-key::before {
+    content: attr(data-en);
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--seal);
+    margin-bottom: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .pillar-arrow {
+    font-family: "Songti SC", serif;
+    color: var(--ink-dim);
+    font-size: 18px;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .pillar-link:active .pillar-arrow {
+    color: var(--seal);
+    transform: translateX(4px);
+  }
+  .pillar-val {
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    line-height: 1.75;
+    margin-top: 10px;
+    max-width: 34ch;
+  }
+
+  /* ========== Contact ========== */
+  .contact-intro {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.95;
+    margin-bottom: 48px;
+    max-width: 36ch;
+  }
+  .contact-intro .bullet { color: var(--seal); margin-right: 8px; }
+
+  .card {
+    padding: 32px 26px;
+    border: 1px solid var(--rule);
+    margin-bottom: 24px;
+    position: relative;
+    background: linear-gradient(180deg, rgba(246,238,218,0.5), transparent);
+  }
+  .card::before, .card::after {
+    content: "";
+    position: absolute;
+    width: 16px; height: 16px;
+    border-color: var(--seal);
+  }
+  .card::before { top: -1px; left: -1px; border-top: 1px solid; border-left: 1px solid; }
+  .card::after { bottom: -1px; right: -1px; border-bottom: 1px solid; border-right: 1px solid; }
+  .card-title {
+    font-family: "Songti SC", serif;
+    font-size: 22px;
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+  }
+  .card-title .en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--seal);
+    letter-spacing: 0.2em;
+    margin-left: 10px;
+    font-weight: 500;
+  }
+  .card-desc {
+    color: var(--ink-mute);
+    font-size: 13.5px;
+    margin-bottom: 22px;
+    line-height: 1.75;
+  }
+  .social-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 56px;
+  }
+  .social-img {
+    display: block;
+    padding: 10px;
+    border: 1px solid var(--rule);
+    background: var(--paper-warm);
+    text-align: center;
+    text-decoration: none;
+    color: var(--ink-mute);
+    transition: border-color 0.2s;
+  }
+  .social-img:active { border-color: var(--seal); }
+  .social-icon {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .social-label {
+    font-family: "Songti SC", serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+  }
+  .contact-inquiry {
+    text-align: left;
+    padding: 36px 0 0;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-mute);
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .contact-inquiry .inquiry-title {
+    font-family: "Songti SC", serif;
+    color: var(--ink);
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .contact-inquiry .inquiry-desc {
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin-bottom: 18px;
+    display: block;
+  }
+  .contact-inquiry a {
+    color: var(--seal);
+    text-decoration: none;
+    font-family: "Menlo", "Courier New", monospace;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--seal-deep);
+  }
+
+  @media (min-width: 700px) {
+    .hero { padding-left: 10vw; padding-right: 10vw; }
+    .hero-mark-wrap { width: 160px; height: 160px; }
+    .social-row { max-width: 480px; }
+  }
+  @media (min-width: 1000px) {
+    .hero { padding-left: 16vw; padding-right: 16vw; }
+  }
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M53G5WD7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div class="edge-rule"></div>
+<div class="edge-stamp">筑 · 见 · ZHUJIAN · MMXXVI</div>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-mark-wrap">
+      <canvas id="seal-canvas"></canvas>
+      <img src="assets/hero_seal.png" alt="筑见 印" class="hero-mark">
+    </div>
+
+    <div class="hero-eyebrow">筑见 · ZHUJIAN</div>
+    <h1>我是 <span class="neil">Neil</span>。</h1>
+    <p class="tagline">搭骨架,看世界</p>
+    <p class="hero-identity">
+      CFO 出身<span class="dot"></span>价值投资<span class="dot"></span>AI 框架建造
+    </p>
+    <p class="hero-cta">
+      如果你也在用框架对抗噪音，我们可能有共鸣。<br>
+      <a href="#works" class="cta-link">看我的判断样本 →</a>
+    </p>
+
+    <div class="pillars">
+      <a href="#works-invest" class="pillar-link">
+        <div class="pillar-row">
+          <span class="pillar-key" data-en="i · Investment">投资</span>
+          <span class="pillar-arrow">→</span>
+        </div>
+        <p class="pillar-val">把判断纪律变成可运行的系统，不靠盘感，靠框架。</p>
+      </a>
+      <a href="#works-ai" class="pillar-link">
+        <div class="pillar-row">
+          <span class="pillar-key" data-en="ii · Framework">AI</span>
+          <span class="pillar-arrow">→</span>
+        </div>
+        <p class="pillar-val">把「怎么想」拆成可以运行的工作流。</p>
+      </a>
+      <a href="#works-meta" class="pillar-link">
+        <div class="pillar-row">
+          <span class="pillar-key" data-en="iii · Meta">认知</span>
+          <span class="pillar-arrow">→</span>
+        </div>
+        <p class="pillar-val">用内观和贝叶斯调试自己的决策操作系统。</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="section-head">
+      <div class="section-label">Works · 作品</div>
+      <h2 class="section-title" id="works">判断力的<span class="accent">样本</span></h2>
+    </div>
+
+    <div class="entry-list">
+      <a href="invest.html" class="entry" id="works-invest">
+        <div class="entry-num">No. 001 — Investment</div>
+        <div class="entry-title">价值投资工具集</div>
+        <div class="entry-desc">多种投资辅助工具：腾讯 FCF 倍数卖出纪律、持仓监控系统、量化情绪探测器（用情绪因子发现市场极端点，配合价值投资做买入时机判断）。</div>
+        <div class="entry-arrow">→</div>
+      </a>
+      <a href="ai.html" class="entry" id="works-ai">
+        <div class="entry-num">No. 002 — Framework</div>
+        <div class="entry-title">SKILL 合集</div>
+        <div class="entry-desc"><strong>mirror · 观己</strong> 等 AI skill，把思维框架变成可运行的工具。把判断逻辑代码化，可复用、可检验。</div>
+        <div class="entry-arrow">→</div>
+      </a>
+      <a href="meta.html" class="entry" id="works-meta">
+        <div class="entry-num">No. 003 — Meta</div>
+        <div class="entry-title">认知框架合集</div>
+        <div class="entry-desc"><strong>TR-001 ~ 004</strong> — 把自己当系统调试，四条行为触发规则，处理分析替代执行、过度自信等典型失败模式。<strong>知识网络图谱</strong> — 辅助发现认知卡点。</div>
+        <div class="entry-arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="section-head">
+      <div class="section-label">Contact · 保持联系</div>
+      <h2 class="section-title">或许我们<br>聊得<span class="accent">来</span></h2>
+    </div>
+
+    <p class="contact-intro">
+      <span class="bullet">·</span>想把 AI 嵌进业务流程，但不知道从哪下手<br>
+      <span class="bullet">·</span>在做价值投资，想交换判断框架<br>
+      <span class="bullet">·</span>对「把思维变成工具」这件事有兴趣
+    </p>
+
+    <div class="card">
+      <div class="card-title">开源 <span class="en">· GitHub</span></div>
+      <div class="card-desc">开源项目 · 代码 · 工具集</div>
+      <a href="https://github.com/zhujianneil" class="btn" target="_blank" rel="noopener">访问主页</a>
+    </div>
+
+    <div class="social-row">
+      <div class="social-img">
+        <img src="social-gongzhonghao.jpg" alt="公众号 · 扫码关注" class="social-icon">
+        <div class="social-label">扫码 · 公众号</div>
+      </div>
+      <div class="social-img">
+        <img src="social-video.jpg" alt="视频号 · 扫码关注" class="social-icon">
+        <div class="social-label">扫码 · 视频号</div>
+      </div>
+      <div class="social-img">
+        <img src="social-xiaohongshu.jpg" alt="小红书 · 扫码关注" class="social-icon">
+        <div class="social-label">扫码 · 小红书</div>
+      </div>
+    </div>
+
+    <div class="contact-inquiry">
+      <span class="inquiry-title">交流 / 合作 / 咨询</span>
+      <span class="inquiry-desc">投资判断 · AI 工作流设计 · AI × 财务</span>
+      <a href="mailto:hi@zhujianneil.com">hi@zhujianneil.com</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  筑见 NEIL<span class="mark">·</span>ZHUJIANNEIL.COM<span class="mark">·</span>MMXXVI
+</footer>
+
+<script>
+(function() {
+  const cvs = document.getElementById('seal-canvas');
+  if (!cvs) return;
+  const ctx = cvs.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let W, H, cx, cy;
+  let t0 = performance.now();
+  let rings = [];
+  let lastRingT = 0;
+  function resize() {
+    const rect = cvs.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    cvs.width = W * dpr;
+    cvs.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx = W / 2; cy = H / 2;
+  }
+  function draw(now) {
+    const t = (now - t0) / 1000;
+    requestAnimationFrame(draw);
+    ctx.clearRect(0, 0, W, H);
+    const cycle = 7;
+    const phase = (Math.sin(t * Math.PI * 2 / cycle - Math.PI / 2) + 1) / 2;
+    const baseR = Math.min(W, H) * 0.32;
+    const breathR = baseR * (1 + phase * 0.35);
+    const g1 = ctx.createRadialGradient(cx, cy, baseR * 0.5, cx, cy, breathR * 1.8);
+    g1.addColorStop(0, `rgba(177,58,47,${0.10 + phase * 0.08})`);
+    g1.addColorStop(0.55, `rgba(177,58,47,${0.04 + phase * 0.03})`);
+    g1.addColorStop(1, 'rgba(177,58,47,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, breathR * 1.8, 0, Math.PI * 2);
+    ctx.fillStyle = g1;
+    ctx.fill();
+    if (t - lastRingT > cycle) {
+      rings.push({ r: baseR * 1.05, op: 0.28, spd: 0.35 });
+      lastRingT = t;
+    }
+    for (let i = rings.length - 1; i >= 0; i--) {
+      const r = rings[i];
+      r.r += r.spd;
+      r.op *= 0.991;
+      if (r.op < 0.008) { rings.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(cx, cy, r.r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(138,42,34,${r.op})`;
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
